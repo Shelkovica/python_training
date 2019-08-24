@@ -12,6 +12,7 @@ class TestAddContact(unittest.TestCase):
 
 
     def login(self, wd, username, password):
+        self.open_home_page(wd)
         # login
         wd.find_element_by_name("user").click()
         wd.find_element_by_name("user").clear()
@@ -108,7 +109,7 @@ class TestAddContact(unittest.TestCase):
         wd.find_element_by_name("notes").send_keys(contact.notes)
         # submit contact creation
         wd.find_element_by_xpath("(//input[@name='submit'])[2]").click()
-
+        self.return_to_home_page(wd)
 
     def logout(self, wd):
         wd.find_element_by_link_text("Logout").click()
@@ -116,22 +117,18 @@ class TestAddContact(unittest.TestCase):
 
     def test_add_contact(self):
         wd = self.wd
-        self.open_home_page(wd)
         self.login(wd, username="admin", password="secret")
         self.create_contact(wd, Contact(firstname="ff", lastname="ff", middlename="ff", nickname="ff", company="ff", address="ff", home="ff", mobile="33", work="44", fax="44", email="1@mail.ru", email2="2@mail.ru",
                             email3="3@mail.ru", homepage="fff", bday="17", bmonth="December", byear="2000", aday="18", amonth="December", ayear="2015", address2="hhh", phone2="hhh", notes="hhh",
                             title1="title"))
-        self.return_to_home_page(wd)
         self.logout(wd)
 
     def test_add_empty_contact(self):
         wd = self.wd
-        self.open_home_page(wd)
         self.login(wd, username="admin", password="secret")
         self.create_contact(wd, Contact(firstname="", lastname="", middlename="", nickname="", company="", address="", home="", mobile="", work="", fax="", email="", email2="",
                             email3="", homepage="", bday="", bmonth="-", byear="", aday="", amonth="-", ayear="", address2="", phone2="", notes="",
                             title1=""))
-        self.return_to_home_page(wd)
         self.logout(wd)
 
     def tearDown(self):
