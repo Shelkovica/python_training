@@ -1,4 +1,7 @@
-
+from selenium.webdriver.support.ui import WebDriverWait
+from selenium.webdriver.support import expected_conditions as EC
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.common.by import By
 
 class SessionHelper:
 
@@ -18,3 +21,8 @@ class SessionHelper:
     def logout(self):
         wd = self.app.wd
         wd.find_element_by_link_text("Logout").click()
+        # успешный клик по элементу формы логина будет означать, что она загрузилась
+        wd.find_element_by_name("user").click()
+
+
+
