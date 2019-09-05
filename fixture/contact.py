@@ -86,8 +86,10 @@ class ContactHelper:
         wd.find_element_by_xpath("//input[@value='Delete']").click()
         # submit delete contact
         wd.switch_to_alert().accept()
+        self.app.wd.implicitly_wait(1)
         self.open_home_page()
 
     def count(self):
         wd = self.app.wd
+        self.open_home_page()
         return len(wd.find_elements_by_name("selected[]"))
