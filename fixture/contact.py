@@ -98,6 +98,7 @@ class ContactHelper:
     def get_contact_list(self):
         wd = self.app.wd
         self.open_home_page()
+        wd.find_element_by_name("selected[]").click
         contacts=[]
         for row in wd.find_elements_by_name("entry"):
             cells = row.find_elements_by_tag_name("td")
