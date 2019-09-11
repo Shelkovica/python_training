@@ -16,9 +16,9 @@ from model.contact import Contact
 
 def test_modify_first_contact_firstname(app):
     if app.contact.count() == 0:
-        app.contact.create(Contact(firstname="test contact"))
+        app.contact.create(Contact(firstname="test contact 0", lastname="000"))
     old_contacts = app.contact.get_contact_list()
-    contact = Contact(firstname="test contact")
+    contact = Contact(firstname="contact firstname1", lastname="contact lastname1")
     contact.id = old_contacts[0].id
     app.contact.modify_first_contact(contact)
     new_contacts = app.contact.get_contact_list()

@@ -92,7 +92,6 @@ class ContactHelper:
 
         self.open_home_page()
 
-
     def count(self):
         wd = self.app.wd
         self.open_home_page()
@@ -106,7 +105,7 @@ class ContactHelper:
             wd.find_element_by_name("selected[]").click
             for row in wd.find_elements_by_name("entry"):
                 cells = row.find_elements_by_tag_name("td")
-                firstname = cells[1].text
+                firstname = cells[2].text
                 lastname = cells[1].text
                 id = cells[0].find_element_by_tag_name("input").get_attribute("value")
                 contacts.append(Contact(firstname=firstname, id=id, lastname=lastname))
