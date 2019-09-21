@@ -3,22 +3,25 @@ from model.group import Group
 
 class GroupHelper:
 
-    def __init__(self, app):
+    def __init__(self, app, local_url, local_group_url ):
         self.app = app
+        self.local_url = local_url
+        self.local_group_url = local_group_url
+
 
     def return_to_groups_page(self):
         wd = self.app.wd
-        if not (wd.current_url.endswith("/group.php") and len(wd.find_elements_by_name("new")) > 0):
+        if not (wd.current_url.endswith(self.local_group_url) and len(wd.find_elements_by_name("new")) > 0):
             wd.find_element_by_link_text("group page").click()
 
     def return_to_home_page(self):
         wd = self.app.wd
-        if not (wd.current_url.endswith("/addressbook/") and len(wd.find_elements_by_name("add")) > 0):
+        if not (wd.current_url.endswith(self.local_url) and len(wd.find_elements_by_name("add")) > 0):
             wd.find_element_by_link_text("home").click()
 
     def open_groups_page(self):
         wd = self.app.wd
-        if not(wd.current_url.endswith("/group.php") and len(wd.find_elements_by_name("new")) > 0):
+        if not(wd.current_url.endswith(self.local_group_url) and len(wd.find_elements_by_name("new")) > 0):
             wd.find_element_by_link_text("groups").click()
 
     def create(self, group):
