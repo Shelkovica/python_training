@@ -1,7 +1,15 @@
 {
-  "baseUrl":"http://localhost/addressbook/",
-  "username": "admin",
-  "password": "secret",
-  "localUrl": "/addressbook/",
-  "localGroupUrl" : "/group.php"
+  "web": {
+    "baseUrl":"http://localhost/addressbook/",
+    "username": "admin",
+    "password": "secret",
+    "localUrl": "/addressbook/",
+    "localGroupUrl" : "/group.php",
+  },
+  "db": {
+    "host": "localhost",
+    "name": "addressbook",
+    "user": "root",
+    "password": ""
+  }
 }
