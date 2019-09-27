@@ -8,7 +8,6 @@ class GroupHelper:
         self.local_url = local_url
         self.local_group_url = local_group_url
 
-
     def return_to_groups_page(self):
         wd = self.app.wd
         if not (wd.current_url.endswith(self.local_group_url) and len(wd.find_elements_by_name("new")) > 0):
@@ -57,7 +56,16 @@ class GroupHelper:
         self.return_to_groups_page()
         self.group_cache = None
 
-    def delete_first_roup(self):
+    def delete_group_by_id(self, id):
+        wd = self.app.wd
+        self.open_groups_page()
+        self.select_group_by_id(id)
+        # submit deletion
+        wd.find_element_by_name("delete").click()
+        self.return_to_groups_page()
+        self.group_cache = None
+
+    def delete_first_group(self):
         self.delete_group_by_index(0)
 
     def select_first_group(self):
@@ -66,6 +74,10 @@ class GroupHelper:
     def select_group_by_index(self, index):
         wd = self.app.wd
         wd.find_elements_by_name("selected[]")[index].click()
+
+    def select_group_by_id(self, id):
+        wd = self.app.wd
+        wd.find_element_by_css_selector("input[value='%s']" % id).click()
 
     def modify_first_group(self):
         self.modify_group_by_index(0)
