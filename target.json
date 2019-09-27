@@ -4,7 +4,7 @@
     "username": "admin",
     "password": "secret",
     "localUrl": "/addressbook/",
-    "localGroupUrl" : "/group.php",
+    "localGroupUrl" : "/group.php"
   },
   "db": {
     "host": "localhost",
