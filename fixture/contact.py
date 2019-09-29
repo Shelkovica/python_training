@@ -83,12 +83,27 @@ class ContactHelper:
         self.return_to_home_page()
         self.contact_cache = None
 
+    def modify_contact_by_id(self, id, new_contact_data):
+        wd = self.app.wd
+        self.open_home_page()
+        self.open_contact_to_edit_by_id(id)
+        self.fill_contact_form(new_contact_data)
+        # submit update contact
+        wd.find_element_by_name("update").click()
+        self.return_to_home_page()
+        self.contact_cache = None
+
     def open_contact_to_edit_by_index(self, index):
         wd = self.app.wd
         self.open_home_page()
         row = wd.find_elements_by_name("entry")[index]
         cell = row.find_elements_by_tag_name("td")[7]
         cell.find_element_by_tag_name("a").click()
+
+    def open_contact_to_edit_by_id(self, id):
+        wd = self.app.wd
+        self.open_home_page()
+        wd.find_element_by_xpath("//a[@href='edit.php?id=%s']" % id).click()
 
 
     def delete_first_contact(self):
@@ -108,9 +123,26 @@ class ContactHelper:
         self.open_home_page()
         self.contact_cache = None
 
+    def delete_contact_by_id(self, id):
+        wd = self.app.wd
+        self.open_home_page()
+        self.select_contact_by_id(id)
+        # delete first contact
+        wd.find_element_by_xpath("//input[@value='Delete']").click()
+        # submit delete contact
+        wd.switch_to_alert().accept()
+        self.app.wd.implicitly_wait(1)
+        wd.find_element_by_css_selector("div.msgbox").text
+        self.open_home_page()
+        self.contact_cache = None
+
     def select_contact_by_index(self, index):
         wd = self.app.wd
         wd.find_elements_by_name("selected[]")[index].click()
+
+    def select_contact_by_id(self, id):
+        wd = self.app.wd
+        wd.find_element_by_css_selector("input[value='%s']" % id).click()
 
     def count(self):
         wd = self.app.wd
@@ -120,7 +152,7 @@ class ContactHelper:
     contact_cache = None
 
     def get_contact_list(self):
-        if self.contact_cache is None:
+       if self.contact_cache is None:
             wd = self.app.wd
             self.open_home_page()
             self.contact_cache = []
@@ -134,7 +166,7 @@ class ContactHelper:
                 id = cells[0].find_element_by_tag_name("input").get_attribute("value")
                 self.contact_cache.append(Contact(firstname=firstname, id=id, all_phones_from_home_page=all_phones,
                                                   lastname=lastname, all_emails_from_home_page=all_emails, address=address))
-        return list(self.contact_cache)
+       return list(self.contact_cache)
 
     def open_contact_view_by_index(self, index):
         wd = self.app.wd
