@@ -5,6 +5,7 @@ import os.path
 import importlib
 import jsonpickle
 from fixture.db import DbFixture
+from fixture.orm import ORMFixture
 
 fixture = None
 target = None
@@ -40,6 +41,16 @@ def db(request):
         dbfixture.destroy()
         request.addfinalizer(fin)
     return dbfixture
+
+
+@pytest.fixture(scope="session")
+def orm(request):
+    orm_config = load_config(request.config.getoption("--target"))['orm']
+    ormfixture = ORMFixture(host=orm_config['host'], name=orm_config['name'], user=orm_config['user'], password=orm_config['password'])
+    def fin():
+        #ORMfixture.destroy()
+        request.addfinalizer(fin)
+    return ormfixture
 
 @pytest.fixture
 def check_ui(request):

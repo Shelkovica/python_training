@@ -1,5 +1,8 @@
 import re
 from random import randrange
+from fixture.orm import ORMFixture
+
+
 
 
 def test_phones_on_home_page(app):
@@ -43,9 +46,13 @@ def merge_emails_like_on_home_page(contact):
                             map(lambda x: x, filter(lambda x: x is not None, [contact.email, contact.email2, contact.email3]))))
 
 
-def test_all_data_contact_on_home_page_orm(app, ORMFixture):
+#db = ORMFixture(host="127.0.0.1", name="addressbook", user="root", password="")
+
+
+def test_all_data_contact_on_home_page_orm(app, orm):
     contact_old = app.contact.get_contact_list()
-    contact_orm = ORMFixture.get_contact_list()
+    contact_orm =orm.get_contact_list()
+    print(contact_orm)
 
   #  c for c in list(app.contact.get_contact_list()):
 #        contact_from_home_page = app.contact.get_contact_list()[0]
