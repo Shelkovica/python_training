@@ -45,8 +45,8 @@ def db(request):
 
 @pytest.fixture(scope="session")
 def orm(request):
-    orm_config = load_config(request.config.getoption("--target"))['orm']
-    ormfixture = ORMFixture(host=orm_config['host'], name=orm_config['name'], user=orm_config['user'], password=orm_config['password'])
+    db_config = load_config(request.config.getoption("--target"))['db']
+    ormfixture = ORMFixture(host=db_config['host'], name=db_config['name'], user=db_config['user'], password=db_config['password'])
     def fin():
         #ORMfixture.destroy()
         request.addfinalizer(fin)
