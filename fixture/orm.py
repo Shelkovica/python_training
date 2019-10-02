@@ -71,7 +71,7 @@ class ORMFixture:
 
     @db_session
     def get_groups_on_contact(self, contact):
-        orm_contact = list(select (c for c in ORMFixture.ORMContact if c.id == contact.id)[0])
+        orm_contact = list(select (c for c in ORMFixture.ORMContact if str(c.id) == str(contact.id)))[0]
         return self.convert_groups_to_model(orm_contact.groups)
 
 
