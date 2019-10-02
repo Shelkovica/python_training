@@ -1,5 +1,6 @@
 from selenium.webdriver.support.ui import Select
 from model.contact import Contact
+from random import randrange
 import re
 
 class ContactHelper:
@@ -202,4 +203,20 @@ class ContactHelper:
         secondaryphone = re.search("P: (.*)", text).group(1)
         return Contact(homephone=homephone, workphone=workphone,
                        mobilephone=mobilephone, secondaryphone=secondaryphone)
+
+    def select_some_group_in_list(self):
+        wd = self.app.wd
+        wd.find_element_by_name("to_group").click()
+        groups_list = wd.find_elements_by_tag_name("option")
+        groups_list[randrange(len(groups_list))].click()
+
+
+    def add_contact_to_some_group_by_id(self, id):
+        wd = self.app.wd
+        self.open_home_page()
+        self.select_contact_by_id(id)
+        self.select_some_group_in_list()
+        wd.find_element_by_name("add").click()
+        wd.find_element_by_css_selector("div.msgbox").text
+        self.open_home_page()
 
