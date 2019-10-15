@@ -204,19 +204,27 @@ class ContactHelper:
         return Contact(homephone=homephone, workphone=workphone,
                        mobilephone=mobilephone, secondaryphone=secondaryphone)
 
-    def select_some_group_in_list(self):
+    def select_some_group_in_list(self, name_group):
         wd = self.app.wd
         wd.find_element_by_name("to_group").click()
-        groups_list = wd.find_elements_by_tag_name("option")
-        groups_list[randrange(len(groups_list))].click()
+        groups_list = wd.find_elements_by_tag_name("option[value=%s]" %name_group)
+        groups_list[0].click()
+        #add_contact_to_some_group_by_name()
 
+    def add_contact_to_some_group_by_name(self, id_contact, name_group):
+        wd = self.app.wd
+        self.add_contact_to_group(id_contact, name_group)
+        self.open_home_page()
 
-    def add_contact_to_some_group_by_id(self, id):
+    def add_contact_to_group(self, id_contact, name_group):
         wd = self.app.wd
         self.open_home_page()
-        self.select_contact_by_id(id)
-        self.select_some_group_in_list()
+        self.select_contact_by_id(id_contact)
+        self.select_some_group_in_list(name_group)
         wd.find_element_by_name("add").click()
         wd.find_element_by_css_selector("div.msgbox").text
-        self.open_home_page()
 
+    def add_contact_to_group_and_open_group(self, id):
+        wd = self.app.wd
+        self.add_contact_to_group(id)
+      #  wd.find_element_by_id

@@ -74,6 +74,16 @@ class ORMFixture:
         orm_contact = list(select (c for c in ORMFixture.ORMContact if str(c.id) == str(contact.id)))[0]
         return self.convert_groups_to_model(orm_contact.groups)
 
+    @db_session
+    def select_group_for_add(self, contact):
+        list_dif = []
+        all_gr = self.get_group_list()
+        contact_gr = self.get_groups_on_contact(contact)
+        for list in all_gr:
+            if list not in contact_gr:
+                list_dif.append(list)
+        return list_dif[0].name
+
 
 
 

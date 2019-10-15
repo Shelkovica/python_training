@@ -2,12 +2,14 @@ from model.contact import Contact
 from model.group import Group
 from random import randrange
 
+
 def test_del_contact_from_group(app, orm):
     if len(orm.get_contact_list()) == 0:
         app.contact.create(Contact(firstname="test contact"))
     if len(orm.get_group_list()) == 0:
         app.group.create(Group(name="test"))
-    print(len(orm.get_contact_list()))
+        #ghjdthbnm вхождение
+
     contacts = orm.get_contact_list()
     index = randrange(len(app.contact.get_contact_list()))
     id = contacts[index].id
