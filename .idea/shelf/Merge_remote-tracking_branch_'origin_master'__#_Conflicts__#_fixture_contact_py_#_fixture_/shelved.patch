@@ -1,0 +1,80 @@
+Index: test/test_del_contact_from_group.py
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>from model.contact import Contact\r\nfrom model.group import Group\r\nimport random\r\n\r\ndef test_del_contact_from_group(app, orm):\r\n    if len(orm.get_contact_list()) == 0:\r\n        app.contact.create(Contact(firstname=\"test contact\"))\r\n    if len(orm.get_group_list()) == 0:\r\n        app.group.create(Group(name=\"test\"))\r\n    group = random.choice(orm.get_group_list())\r\n    if len(orm.get_contacts_in_group(group)) == 0:\r\n        contact = random.choice(orm.get_contact_list())\r\n        app.contact.add_contact_to_some_group(group, contact)\r\n    else:\r\n        contact = random.choice(orm.get_contact_list())\r\n        app.contact.add_contact_to_some_group(group, contact)\r\n    count_groups_old = len(orm.get_groups_on_contact(contact))\r\n    app.contact.del_contact_from_group(group, contact)\r\n    count_groups_new = len(orm.get_groups_on_contact(contact))\r\n    assert count_groups_old-1 == count_groups_new\r\n    assert orm.contact_in_group(group,contact) is False
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- test/test_del_contact_from_group.py	(date 1571209955000)
++++ test/test_del_contact_from_group.py	(date 1571210157450)
+@@ -2,6 +2,7 @@
+ from model.group import Group
+ import random
+ 
++
+ def test_del_contact_from_group(app, orm):
+     if len(orm.get_contact_list()) == 0:
+         app.contact.create(Contact(firstname="test contact"))
+@@ -18,4 +19,5 @@
+     app.contact.del_contact_from_group(group, contact)
+     count_groups_new = len(orm.get_groups_on_contact(contact))
+     assert count_groups_old-1 == count_groups_new
+-    assert orm.contact_in_group(group,contact) is False
+\ No newline at end of file
++    assert orm.contact_in_group(group,contact) is False
++
+Index: fixture/orm.py
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>from pony.orm import *\r\nfrom datetime import datetime\r\nfrom model.group import Group\r\nfrom model.contact import Contact\r\n\r\n\r\n\r\nclass ORMFixture:\r\n\r\n    db = Database()\r\n\r\n    class ORMGroup(db.Entity):\r\n        _table_ = 'group_list'\r\n        id = PrimaryKey(int, column='group_id')\r\n        name = Optional(str, column='group_name')\r\n        header = Optional(str, column='group_header')\r\n        footer = Optional(str, column='group_footer')\r\n        contacts = Set(lambda: ORMFixture.ORMContact, table='address_in_groups', column='id', reverse='groups', lazy=True)\r\n\r\n    class ORMContact(db.Entity):\r\n        _table_ = 'addressbook'\r\n        id = PrimaryKey(int, column='id')\r\n        firstname = Optional(str, column='firstname')\r\n        lastname = Optional(str, column='lastname')\r\n        address = Optional(str, column='address')\r\n        secondaryphone = Optional(str, column='phone2')\r\n        mobilephone = Optional(str, column='mobile')\r\n        homephone = Optional(str, column='home')\r\n        workphone = Optional(str, column='work')\r\n        email = Optional(str, column='email')\r\n        email2 = Optional(str, column='email2')\r\n        email3 = Optional(str, column='email3')\r\n        deprecated = Optional(datetime, column='deprecated')\r\n        groups = Set(lambda: ORMFixture.ORMGroup, table='address_in_groups', column='group_id', reverse='contacts', lazy=True)\r\n\r\n    def __init__(self, host, name, user, password):\r\n        self.db.bind(provider='mysql', host=host, database=name, user=user, password=password)\r\n        self.db.generate_mapping()\r\n        sql_debug(True)\r\n\r\n    def convert_groups_to_model(self, groups):\r\n        def convert(group):\r\n            return Group(id=str(group.id), name=group.name, header=group.header, footer=group.footer)\r\n        return list(map(convert, groups))\r\n\r\n    def convert_contacts_to_model(self, contacts):\r\n        def convert(contact):\r\n            return Contact(id=str(contact.id), firstname=contact.firstname, lastname=contact.lastname, address=contact.address,\r\n                           secondaryphone=contact.secondaryphone, mobilephone=contact.mobilephone, homephone=contact.homephone,\r\n                           workphone=contact.workphone, email=contact.email, email2=contact.email2, email3=contact.email3)\r\n        return list(map(convert, contacts))\r\n\r\n    @db_session\r\n    def get_group_list(self):\r\n        return self.convert_groups_to_model(select(g for g in ORMFixture.ORMGroup))\r\n\r\n    @db_session\r\n    def get_contact_list(self):\r\n        return self.convert_contacts_to_model(select(c for c in ORMFixture.ORMContact if c.deprecated is None))\r\n\r\n    @db_session\r\n    def get_contacts_in_group(self, group):\r\n        orm_group = list(select (g for g in ORMFixture.ORMGroup if g.id == group.id))[0]\r\n        return self.convert_contacts_to_model(orm_group.contacts)\r\n\r\n    @db_session\r\n    def get_contacts_not_in_group(self, group):\r\n        orm_group = list(select (g for g in ORMFixture.ORMGroup if g.id == group.id))[0]\r\n        return self.convert_contacts_to_model(\r\n            select(c for c in ORMFixture.ORMContact if c.deprecated is None and orm_group not in c.groups))\r\n\r\n    @db_session\r\n    def get_groups_on_contact(self, contact):\r\n        orm_contact = list(select (c for c in ORMFixture.ORMContact if str(c.id) == str(contact.id)))[0]\r\n        return self.convert_groups_to_model(orm_contact.groups)\r\n\r\n    @db_session\r\n    def contact_in_group(self, group, contact):\r\n        group = Group(id=group.id)\r\n        group_contacts = self.get_contacts_in_group(group)\r\n        for group_contact in group_contacts:\r\n            if group_contact.id == contact.id:\r\n                return True\r\n        return False\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- fixture/orm.py	(date 1571209955000)
++++ fixture/orm.py	(date 1571210157483)
+@@ -75,6 +75,7 @@
+         return self.convert_groups_to_model(orm_contact.groups)
+ 
+     @db_session
++
+     def contact_in_group(self, group, contact):
+         group = Group(id=group.id)
+         group_contacts = self.get_contacts_in_group(group)
+@@ -83,6 +84,15 @@
+                 return True
+         return False
+ 
++    def select_group_for_add(self, contact):
++        list_dif = []
++        all_gr = self.get_group_list()
++        contact_gr = self.get_groups_on_contact(contact)
++        for list in all_gr:
++            if list not in contact_gr:
++                list_dif.append(list)
++        return list_dif[0].name
++
+ 
+ 
+ 
+Index: test/test_add_contact_to_group.py
+IDEA additional info:
+Subsystem: com.intellij.openapi.diff.impl.patch.BaseRevisionTextPatchEP
+<+>from model.contact import Contact\r\nfrom model.group import Group\r\nimport random\r\n\r\ndef test_add_contact_to_group(app, orm, json_groups):\r\n    if len(orm.get_contact_list()) == 0:\r\n        app.contact.create(Contact(firstname=\"test contact\"))\r\n    if len(orm.get_group_list()) == 0:\r\n        app.group.create(Group(name=\"test\"))\r\n    groups = orm.get_group_list()\r\n    free_groups = []\r\n    for group in groups:\r\n        if len(orm.get_contacts_not_in_group(group)) != 0:\r\n            free_groups.append(group)\r\n    if len(free_groups) == 0:\r\n        group = json_groups\r\n        app.group.create(group)\r\n    else:\r\n        group = random.choice(free_groups)\r\n    contact = random.choice(orm.get_contacts_not_in_group(group))\r\n    count_groups_old = len(orm.get_groups_on_contact(contact))\r\n    app.contact.add_contact_to_some_group(group, contact)\r\n    assert count_groups_old+1 == len(orm.get_groups_on_contact(contact))\r\n    assert orm.contact_in_group(group,contact)\r\n
+Subsystem: com.intellij.openapi.diff.impl.patch.CharsetEP
+<+>UTF-8
+===================================================================
+--- test/test_add_contact_to_group.py	(date 1571209955000)
++++ test/test_add_contact_to_group.py	(date 1571210157406)
+@@ -2,6 +2,7 @@
+ from model.group import Group
+ import random
+ 
++
+ def test_add_contact_to_group(app, orm, json_groups):
+     if len(orm.get_contact_list()) == 0:
+         app.contact.create(Contact(firstname="test contact"))
+@@ -22,3 +23,4 @@
+     app.contact.add_contact_to_some_group(group, contact)
+     assert count_groups_old+1 == len(orm.get_groups_on_contact(contact))
+     assert orm.contact_in_group(group,contact)
++
