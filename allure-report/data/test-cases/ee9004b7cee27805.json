@@ -1,0 +1,213 @@
+{
+  "uid" : "ee9004b7cee27805",
+  "name" : "test_add_group[None:name7dvN nm:header:footerDJylPOO]",
+  "fullName" : "test.test_add_group#test_add_group",
+  "historyId" : "0735cddbf26bdc8a7f5f82919a6655bc",
+  "time" : {
+    "start" : 1571254927863,
+    "stop" : 1571254929597,
+    "duration" : 1734
+  },
+  "status" : "passed",
+  "flaky" : false,
+  "newFailed" : false,
+  "beforeStages" : [ {
+    "name" : "stop",
+    "time" : {
+      "start" : 1571254916043,
+      "stop" : 1571254916043,
+      "duration" : 0
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "hasContent" : false,
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false
+  }, {
+    "name" : "check_ui",
+    "time" : {
+      "start" : 1571254927862,
+      "stop" : 1571254927862,
+      "duration" : 0
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "hasContent" : false,
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false
+  }, {
+    "name" : "app",
+    "time" : {
+      "start" : 1571254927801,
+      "stop" : 1571254927862,
+      "duration" : 61
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "hasContent" : false,
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false
+  }, {
+    "name" : "db",
+    "time" : {
+      "start" : 1571254916043,
+      "stop" : 1571254916065,
+      "duration" : 22
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "hasContent" : false,
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false
+  } ],
+  "testStage" : {
+    "status" : "passed",
+    "steps" : [ {
+      "name" : "Given a group list",
+      "time" : {
+        "start" : 1571254927864,
+        "stop" : 1571254927866,
+        "duration" : 2
+      },
+      "status" : "passed",
+      "steps" : [ ],
+      "attachments" : [ ],
+      "parameters" : [ {
+        "name" : "app",
+        "value" : "<fixture.application.Application object at 0x0442D1D0>"
+      }, {
+        "name" : "db",
+        "value" : "<fixture.db.DbFixture object at 0x0442D290>"
+      } ],
+      "hasContent" : true,
+      "stepsCount" : 0,
+      "attachmentsCount" : 0,
+      "shouldDisplayMessage" : false
+    }, {
+      "name" : "Add a group to the list",
+      "time" : {
+        "start" : 1571254927866,
+        "stop" : 1571254929592,
+        "duration" : 1726
+      },
+      "status" : "passed",
+      "steps" : [ ],
+      "attachments" : [ ],
+      "parameters" : [ {
+        "name" : "app",
+        "value" : "<fixture.application.Application object at 0x0442D1D0>"
+      }, {
+        "name" : "group",
+        "value" : "None:name7dvN nm:header:footerDJylPOO"
+      } ],
+      "hasContent" : true,
+      "stepsCount" : 0,
+      "attachmentsCount" : 0,
+      "shouldDisplayMessage" : false
+    }, {
+      "name" : "Assert group list",
+      "time" : {
+        "start" : 1571254929592,
+        "stop" : 1571254929596,
+        "duration" : 4
+      },
+      "status" : "passed",
+      "steps" : [ ],
+      "attachments" : [ ],
+      "parameters" : [ {
+        "name" : "app",
+        "value" : "<fixture.application.Application object at 0x0442D1D0>"
+      }, {
+        "name" : "check_ui",
+        "value" : "False"
+      }, {
+        "name" : "db",
+        "value" : "<fixture.db.DbFixture object at 0x0442D290>"
+      }, {
+        "name" : "group",
+        "value" : "None:name7dvN nm:header:footerDJylPOO"
+      }, {
+        "name" : "old_groups",
+        "value" : "[188:::, 189:name7dvN nm:header:footerDJylPOO, 190:::, 191:name7dvN nm:header:footerDJylPOO, 192:::, 193:name new1:header:footerDJylPOO, 194:::, 195:name7dvN nm:header:footerDJylPOO, 196:::, 197:name new1:header:footerDJylPOO, 199:name7dvN nm:header:footerDJylPOO, 200:::, 201:name7dvN nm:header:footerDJylPOO, 202:name7dvN nm:header:footerDJylPOO, 203:::, 204:name7dvN nm:header:footerDJylPOO, 205:::, 206:name7dvN nm:header:footerDJylPOO, 207:::, 208:name7dvN nm:header:footerDJylPOO, 209:::, 210:name7dvN nm:header:footerDJylPOO, 211:::, 212:name7dvN nm:header:footerDJylPOO, 213:::, 214:name7dvN nm:header:footerDJylPOO, 215:::, 216:name7dvN nm:header:footerDJylPOO, 217:::]"
+      } ],
+      "hasContent" : true,
+      "stepsCount" : 0,
+      "attachmentsCount" : 0,
+      "shouldDisplayMessage" : false
+    } ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "hasContent" : true,
+    "stepsCount" : 3,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false
+  },
+  "afterStages" : [ {
+    "name" : "stop::fin",
+    "time" : {
+      "start" : 1571254929607,
+      "stop" : 1571254933156,
+      "duration" : 3549
+    },
+    "status" : "passed",
+    "steps" : [ ],
+    "attachments" : [ ],
+    "parameters" : [ ],
+    "hasContent" : false,
+    "stepsCount" : 0,
+    "attachmentsCount" : 0,
+    "shouldDisplayMessage" : false
+  } ],
+  "labels" : [ {
+    "name" : "parentSuite",
+    "value" : "test"
+  }, {
+    "name" : "suite",
+    "value" : "test_add_group"
+  }, {
+    "name" : "host",
+    "value" : "LAPTOP-E549EV1M"
+  }, {
+    "name" : "thread",
+    "value" : "18312-MainThread"
+  }, {
+    "name" : "framework",
+    "value" : "pytest"
+  }, {
+    "name" : "language",
+    "value" : "cpython3"
+  }, {
+    "name" : "package",
+    "value" : "test.test_add_group"
+  }, {
+    "name" : "resultFormat",
+    "value" : "allure2"
+  } ],
+  "parameters" : [ {
+    "name" : "json_groups",
+    "value" : "None:name7dvN nm:header:footerDJylPOO"
+  } ],
+  "links" : [ ],
+  "hidden" : false,
+  "retry" : false,
+  "extra" : {
+    "severity" : "normal",
+    "retries" : [ ],
+    "categories" : [ ],
+    "tags" : [ ]
+  },
+  "source" : "ee9004b7cee27805.json",
+  "parameterValues" : [ "None:name7dvN nm:header:footerDJylPOO" ]
+}
