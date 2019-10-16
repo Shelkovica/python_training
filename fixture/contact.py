@@ -3,6 +3,7 @@ from model.contact import Contact
 from random import randrange
 import re
 
+
 class ContactHelper:
 
     def __init__(self,app, local_url):
@@ -143,7 +144,7 @@ class ContactHelper:
 
     def select_contact_by_id(self, id):
         wd = self.app.wd
-        wd.find_element_by_css_selector("input[value='%s']" % id).click()
+        wd.find_element_by_xpath("//input[@id='" + id + "']").click()
 
     def count(self):
         wd = self.app.wd
@@ -204,19 +205,28 @@ class ContactHelper:
         return Contact(homephone=homephone, workphone=workphone,
                        mobilephone=mobilephone, secondaryphone=secondaryphone)
 
-    def select_some_group_in_list(self):
+    def select_group_in_list(self, group):
         wd = self.app.wd
-        wd.find_element_by_name("to_group").click()
-        groups_list = wd.find_elements_by_tag_name("option")
-        groups_list[randrange(len(groups_list))].click()
+        select = Select(wd.find_element_by_xpath("//select[@name='to_group']"))
+        select.select_by_value(group.id)
 
 
-    def add_contact_to_some_group_by_id(self, id):
+    def add_contact_to_some_group(self, group, contact):
         wd = self.app.wd
         self.open_home_page()
-        self.select_contact_by_id(id)
-        self.select_some_group_in_list()
+        self.select_contact_by_id(contact.id)
+        self.select_group_in_list(group)
         wd.find_element_by_name("add").click()
+        wd.find_element_by_css_selector("div.msgbox").text
+        self.open_home_page()
+
+    def del_contact_from_group(self, group, contact):
+        wd = self.app.wd
+        self.open_home_page()
+        select = Select(wd.find_element_by_xpath("//select[@name='group']"))
+        select.select_by_value(group.id)
+        self.select_contact_by_id(contact.id)
+        wd.find_element_by_name("remove").click()
         wd.find_element_by_css_selector("div.msgbox").text
         self.open_home_page()
 

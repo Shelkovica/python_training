@@ -2,7 +2,7 @@ from pony.orm import *
 from datetime import datetime
 from model.group import Group
 from model.contact import Contact
-#from pymysql import decoders
+
 
 
 class ORMFixture:
@@ -74,7 +74,14 @@ class ORMFixture:
         orm_contact = list(select (c for c in ORMFixture.ORMContact if str(c.id) == str(contact.id)))[0]
         return self.convert_groups_to_model(orm_contact.groups)
 
-
+    @db_session
+    def contact_in_group(self, group, contact):
+        group = Group(id=group.id)
+        group_contacts = self.get_contacts_in_group(group)
+        for group_contact in group_contacts:
+            if group_contact.id == contact.id:
+                return True
+        return False
 
 
 

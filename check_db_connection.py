@@ -5,7 +5,7 @@ from model.contact import Contact
 db = ORMFixture(host="127.0.0.1", name="addressbook", user="root", password="")
 
 try:
-   l=db.get_groups_on_contact(Contact(id="210"))
+   l=db.get_contacts_not_in_group(Group(id="188"))
    for item in l:
        print(item)
    print(len(l))
